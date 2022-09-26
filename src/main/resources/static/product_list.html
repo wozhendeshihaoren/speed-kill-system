@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>hello</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <!-- 引入 Bootstrap -->
+
+</head>
+
+<body>
+<div id = "app">
+<!-- 页面显示部分-->
+
+  <el-table
+          :data="products"
+          style="width: 100%">
+    <el-table-column
+            prop="productImg"
+            label="图片"
+            width="180">
+      <template v-slot="scope">
+        <img :src="scope.row.productImg" alt="" width="90" height="90">
+      </template>
+    </el-table-column>
+    <el-table-column
+            prop="name"
+            label="名称"
+            width="180">
+    </el-table-column>
+    <el-table-column
+            prop="number"
+            label="库存"
+            width="180">
+    </el-table-column>
+    <el-table-column
+            prop="startTime"
+            label="开始时间"
+            width="180">
+    </el-table-column>
+    <el-table-column
+            prop="endTime"
+            label="结束时间"
+            width="180">
+    </el-table-column>
+    <el-table-column
+            label="操作">
+      <el-button type="danger" @click="killProduct()">秒杀</el-button>
+    </el-table-column>
+  </el-table>
+</div>
+<script src="vue.js"></script>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script >
+
+   var vue = new Vue({
+      el: '#app',
+     data: {
+        products: []
+     },
+     created() {
+        this.getAll()
+     },
+     methods: {
+        getAll(){
+          axios.get("/findAll").then((res) =>{
+            this.products = res.data;
+          })
+        },
+       killProduct() {
+           axios.get("/killProduct/1/1").then((res) =>{
+             alert("秒杀"+res.data)
+           })
+       }
+
+
+
+     }
+           }
+
+   )
+</script>
+
+
+</body>
+
+</html>
